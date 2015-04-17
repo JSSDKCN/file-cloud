@@ -31,15 +31,23 @@ var uploader = {
                 }
                 realPath = dir + "/" + newFilename;
             }
+            if (fs.existsSync(realPath)) {
+                fs.unlink(realPath);
+            }
+
             fs.rename(filename, realPath, function(error) {
                 if (error) {
                     next({
-                        error: true
+                        error: true,
+                        path: realPath,
+                        url: base + "/" + newFilename,
+
                     });
                 } else {
                     next({
                         error: false,
-                        url: base + "/" + newFilename
+                        url: base + "/" + newFilename,
+                        path: realPath
                     });
                 }
             });

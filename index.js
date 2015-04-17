@@ -19,24 +19,27 @@ var fileCloud = {
 
         var async = require('async');
 
-        async.mapSeries(files, function (file, next) {
+        async.mapSeries(files, function (file, cb) {
             fileCloud.toHash(file.fd, function(hash) {
                 uploader.upload(file.fd, function(result) {
                     if (!result.error) {
-                        next(true, {
+                        cb(null, {
                             success: true,
                             url: result.url,
-                            hash: hash
+                            hash: hash,
+                            path: result.path
                         })
                     } else {
-                        next(false, {
+                        cb(null, {
                             success: false,
                             url: null,
-                            hash: hash
+                            hash: hash,
+                            path: result.path
                         })
                     }
                 });
             });
+
         }, function (err, results) {
             next(err, results);
         });

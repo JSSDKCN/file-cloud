@@ -1,6 +1,6 @@
 {
   "name": "file-cloud",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "simple image file management functions",
   "main": "index.js",
   "directories": {

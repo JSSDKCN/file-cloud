@@ -51,21 +51,20 @@ describe('file-cloud', function () {
                 base: "http://soudld.com",
                 dir: 'test/upload'
             });
-            var dest = "test/upload/990dedf3b21ec4ba321b8a92aab0bce8bcff87ce.png";
-            var file = 'test/7.png';
-            var fs = require("fs");
-            if (fs.existsSync(dest)) {
-                fs.renameSync(dest, file);
-             }
-            fileCloud.cloud.save([{
-                fd: file
-            }], uploader, function (error, results) {
+            var files = [{fd: "test/data/1.jpg"}, {fd: "test/data/2.jpg"}];
+
+            fileCloud.cloud.save(files, uploader, function (error, results) {
                 var validator = require("validator");
                 assert(true, error == true);
-                assert(true, results.length == 1);
-                assert(true, results[0].success === true);
-                assert(true, validator.isURL(results[0].url));
-                assert(true, results[0].hash === '990dedf3b21ec4ba321b8a92aab0bce8bcff87ce');
+                assert(true, results.length == 2);
+                for(var i = 0; i < results.length; i++) {
+                    var item = results[i];
+                    var file = files[i];
+                    fs.rename(item.path, file.fd);
+                    assert(true, item.path != null);
+                    assert(true, item.url != null);
+                    assert(true, item.hash != null);
+                }
                 done();
             });
         });
